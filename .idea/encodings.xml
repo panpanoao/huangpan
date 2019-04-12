@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/about.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/indexfirst.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/info.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/infopic.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/infopics.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/infos.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/list.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/share.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/time.jsp" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/14E4E6F209C2D91106F82BEF66C010CD.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/1B901458B8D9656137D5DE7DD1A2E9F5.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/330803-1P40322420023.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/333B7260A1578AB323949AD02C7EC8F3.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/3DF6A87B4A1A960F2DB9F593C183C8C2.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/49CF9C415BEF6EA084305494F849C60E.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/4C31C20B52A047A37A41BB7DB1E2FE72.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/6A12F5511D6737DD15394B26A6ECF98B.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/6F19E9D9C34CEABDF8BE6548A226473A.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/8FF3F5ECC68421DC56BD1FEB0A3DAFA7.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/A8A466665E27DDE076BC3D428CC2526F.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/D75699FC8F5683992D8CC6DC8C79DBD3.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/EB2F7AFD2602A955CC13C943BCDCAB14.jpg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/mmqrcode1553129238917.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/images/zhuyetouxiang.jpeg" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/commss.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/jquery.mincc.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/music/test.mp3" charset="GBK" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>
