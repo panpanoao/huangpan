@@ -78,7 +78,27 @@
 
 
       });
-
+      function cc(id){
+        var res = confirm("确认删除吗？");
+        if(res){
+          $.ajax({
+            type: "post",//请求方式
+            processData: true,//序列化
+            data: {wordsid:id},//参数
+            dataType: 'json', //接受数据格式
+            url: basePath + "/deletewords.json", //地址
+            success: function (data) {
+              if(data==1){
+                alert("删除成功");
+                location.reload(false);
+              }
+            },
+            error: function () {
+              alert("错误");
+            }
+          });
+        }
+      }
       function dianzan() {
           var bowenid=${bowen.id};
           var usersid=${sessionScope.userslogin.id}
@@ -232,7 +252,7 @@
             <div class="del">
                 &nbsp; &nbsp;  <a style="color:red" onclick="alert('还在开发中')" id="chakan${a.id}">查看回复</a>
           <c:if test="${sessionScope.userslogin.id==1}">
-           <a href="" style="color: #b3d135">删除</a>
+           <a onclick="cc(${a.id})" style="color: #b3d135">删除</a>
           </c:if>
             </div>
             <div class="comment_content" >${a.wordsText}</div>

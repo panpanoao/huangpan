@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.BowenRepository;
+import com.example.demo.dao.ReplyRepository;
 import com.example.demo.dao.WordsRepository;
 import com.example.demo.dao.ZanRepository;
 import com.example.demo.mapper.BowenMapper;
@@ -30,6 +31,9 @@ public class BowenServiceImpl {
 
     @Autowired
     WordsRepository wordsRepository;
+
+    @Autowired
+    ReplyRepository  replyRepository;
 
     @Autowired
     BowenMapper bowenMapper;
@@ -101,6 +105,16 @@ public class BowenServiceImpl {
             wordsRepository.save(words);
             bowenRepository.updateByLiuLanfu(bowenid);
             return 2;
+        }
+    }
+
+
+    public void deleteByBowenId(Integer wordsId){
+        try{
+        replyRepository.deletereplyByBowenId(wordsId);
+        wordsRepository.delete(wordsId);
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(),e);
         }
     }
 

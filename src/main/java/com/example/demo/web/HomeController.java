@@ -255,4 +255,21 @@ public class HomeController {
       return  albumService.liuyanalbum(userid,albumText,session,albumid);
     }
 
+    /**
+     * 删除博文id对应留言
+     * @param wordsid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/deletewords.json")
+    public int deleteLiuyan(Integer wordsid){
+        if(wordsid!=0||wordsid!=null){
+            bowenService.deleteByBowenId(wordsid);
+            return 1;
+        }else{
+            return 2;
+        }
+    }
+
+
 }

@@ -10,6 +10,8 @@ public class Reply {
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="ID")
     private Integer id;
+    @Column(name="userid")
+    private Integer userid;
    @Column(name="user_name")
    private String userName;
     @Column(name="reply_time")
@@ -20,6 +22,24 @@ public class Reply {
     private int wordsid;
     @Column(name="words_name")
     private String wordsName;
+    @Column(name="wordsfkid")
+    private Integer wordsfkid;
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
+    }
+
+    public Integer getWordsfkid() {
+        return wordsfkid;
+    }
+
+    public void setWordsfkid(Integer wordsfkid) {
+        this.wordsfkid = wordsfkid;
+    }
 
     public Integer getId() {
         return id;
