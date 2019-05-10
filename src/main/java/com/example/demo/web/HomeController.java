@@ -1,23 +1,20 @@
 package com.example.demo.web;
 
-import com.example.demo.Util.BackMusic;
 import com.example.demo.dao.*;
 import com.example.demo.model.*;
 import com.example.demo.service.AlbumServiceImpl;
 import com.example.demo.service.BowenServiceImpl;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -51,7 +48,7 @@ public class HomeController {
     public ModelAndView indexfirst(HttpSession session) {
 
         ModelAndView result = new ModelAndView();
-        Users users=(Users)session.getAttribute("userslogin");
+        Users users=(Users)session.getAttribute("login");
        if(users==null){
            result.setViewName("/denglu");
        }else {
@@ -72,12 +69,22 @@ public class HomeController {
     public ModelAndView indexfirsst(@RequestParam(required = false, defaultValue = "1") Integer id,String code) {
         ModelAndView result = new ModelAndView();
           //根据id博文数据
-              Bowen bowen = null;
+        Bowen bowen = null;
              bowen = bowenService.findById(id);
             result.addObject("bowen", bowen);
             //找到该博文下的所有留言
             List<Words> wordsList = wordsRepository.findBybowenid(id);
             result.addObject("wordsList", wordsList);
+          List<Integer> wordsid=new ArrayList<>();
+        for (Words words : wordsList) {
+            wordsid.add(words.getId());
+        }
+        List<Reply> replyList=replyRepository.findByWordsfkidInOrderByReplyTimeDesc(wordsid);
+        for (Reply reply : replyList) {
+            System.out.println("数据"+reply);
+        }
+
+        result.addObject("replyList", replyList);
             if(code==null||code==""||code=="null"){
                 result.setViewName("/info");
             }else{
@@ -92,14 +99,20 @@ public class HomeController {
      *
      * @param userid
      * @param wordsText
-     * @param session
+     * @param
      * @param bowenid
      * @return
      */
     @ResponseBody
     @RequestMapping("/liuyan.json")
-    public int liuyan(Integer userid, String wordsText, HttpSession session, Integer bowenid) {
-    return bowenService.liuyan(userid,wordsText,session,bowenid);
+    public int liuyan(Integer userid, String wordsText, String userName, Integer bowenid, HttpSession session) {
+        System.out.println(userid);
+        if (userid == null || userid == 0) {
+            return 1;
+        } else {
+            Users users=(Users) session.getAttribute("login");
+            return bowenService.liuyan(userid, wordsText, userName, bowenid);
+        }
     }
 
     /**
@@ -245,14 +258,14 @@ public class HomeController {
      *
      * @param userid
      * @param albumText
-     * @param session
+     * @param
      * @param albumid
      * @return
      */
     @ResponseBody
     @RequestMapping("/liuyanalbum.json")
-    public int liuyanalbum(Integer userid, String albumText, HttpSession session, Integer albumid) {
-      return  albumService.liuyanalbum(userid,albumText,session,albumid);
+    public int liuyanalbum(Integer userid, String albumText,String userName, Integer albumid) {
+      return  albumService.liuyanalbum(userid,albumText,userName,albumid);
     }
 
     /**
@@ -270,6 +283,10 @@ public class HomeController {
             return 2;
         }
     }
-
+    @ResponseBody
+    @RequestMapping("/lyhuifu.json")
+    public int lyhuifu(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer bowenid ,HttpSession session){
+     return bowenService.lyhuifu( wordsfkid, userName,userid, reply_text,bowenid,session);
+    }
 
 }

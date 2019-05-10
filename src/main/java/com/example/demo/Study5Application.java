@@ -32,6 +32,11 @@ public class Study5Application extends SpringBootServletInitializer  implements 
 		SpringApplication.run(Study5Application.class, args);
 	}
 
+	/**
+	 * 用于spring boot启动时同时执行以下方法（创建线程）
+	 * @param args
+	 * @throws Exception
+	 */
 	@Override
 	public void run(String... args) throws Exception {
 

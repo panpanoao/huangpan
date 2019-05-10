@@ -87,14 +87,13 @@ public class AlbumServiceImpl {
     }
 
 
-    public int liuyanalbum(Integer userid, String albumText, HttpSession session, Integer albumid) {
+    public int liuyanalbum(Integer userid, String albumText, String userName, Integer albumid) {
         if (userid == null || userid == 0) {
             return 1;
         } else {
-            Users users = (Users) session.getAttribute("userslogin");
             Words words = new Words();
-            words.setUserName(users.getUserName());
-            words.setUsersid(users.getId());
+            words.setUserName(userName);
+            words.setUsersid(userid);
             words.setAlbumText(albumText);
             words.setAlbumid(albumid);
             words.setAlbumTime(new Date());

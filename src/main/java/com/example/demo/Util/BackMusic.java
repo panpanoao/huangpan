@@ -3,14 +3,13 @@ package com.example.demo.Util;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.*;
+
 
 /**
  * 音乐播放器
  */
 public class BackMusic extends Thread {
-    Player player;
+/*    Player player;
     String music;
     public BackMusic(String file) {
         this.music = file;
@@ -26,6 +25,6 @@ public class BackMusic extends Thread {
         BufferedInputStream buffer = new BufferedInputStream(new FileInputStream(music));
         player = new Player(buffer);
         player.play();
-    }
+    }*/
 
 }

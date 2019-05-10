@@ -60,7 +60,7 @@
                   //获取验证结果，如果成功，执行下面代码
                   var formData = $("#MyForm").serialize();
                   $.ajax({
-                      type: "post",//请求方式
+                      type: "get",//请求方式
                       processData: true,//序列化
                       data: formData,//参数
                       dataType: 'json', //接受数据格式
@@ -113,7 +113,7 @@
 
     function dianzan() {
           var albumid=${album.id};
-          var usersid=${sessionScope.userslogin.id}
+          var usersid=${sessionScope.login.id}
               $.ajax({
                   type: "post",//请求方式
                   processData: true,//序列化
@@ -234,7 +234,8 @@
       <h2>文章评论</h2>
       <form id="MyForm">
         <div class="modal-body">
-          <input type="hidden" name="userid" value="${sessionScope.userslogin.id}">
+          <input type="hidden" name="userid" value="${sessionScope.login.id}">
+          <input type="hidden" name="userName" value="${sessionScope.login.userName}">
           <input type="hidden" name="albumid" value="${album.id}">
           <div class="form-group">
             <input type="text" name="albumText"  id="albumText" class="form-control" placeholder="请输入留言" >
@@ -257,7 +258,7 @@
           </div>
           <div class="del">
             &nbsp; &nbsp;  <a style="color:red" onclick="alert('还在开发中')" id="chakan${a.id}">查看回复</a>
-            <c:if test="${sessionScope.userslogin.id==1}">
+            <c:if test="${sessionScope.login.id==1}">
               <a onclick="cc(${a.id})" style="color: #b3d135">删除</a>
             </c:if>
           </div>

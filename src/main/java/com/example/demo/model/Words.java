@@ -9,7 +9,7 @@ public class Words{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="ID")
-    private int id;
+    private Integer id;
     @Column(name="usersid")
     private int usersid;
     @Column(name="user_name")
@@ -31,7 +31,7 @@ public class Words{
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

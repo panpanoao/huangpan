@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class GetSMS {
+public  class GetSMS {
     /**
      * 用户ID
      */
@@ -37,7 +37,7 @@ public class GetSMS {
     public  static String getmMssage(String to) {
         String args = SendNumUtil.queryArgs(ACCOUNT_SID, AUTH_TOKEN, smsContent, to);
         OutputStreamWriter out = null;
-        InputStream in = null;
+        InputStream in = null; 
         BufferedReader br = null;
         StringBuffer sb = new StringBuffer();
         try {
@@ -77,8 +77,8 @@ public class GetSMS {
 
  //测试功能
   public static void main(String[] args) {
-/*        String result = getmMssage("18890598525");
-        System.out.println("验证码："+randNum+"\t"+result);*/
+      String result = getmMssage("18890598525");
+        System.out.println("33333333333333333："+randNum+"\t"+result);
 
 
     }

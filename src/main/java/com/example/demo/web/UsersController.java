@@ -1,6 +1,5 @@
 package com.example.demo.web;
 
-import com.example.demo.Util.BackMusic;
 import com.example.demo.Util.GetSMS;
 import com.example.demo.Util.Md5;
 import com.example.demo.dao.UsersRepository;
@@ -46,17 +45,18 @@ public class UsersController {
      * 登陆验证
      * @param userName
      * @param password
-     * @param session
+     * @param
      * @return
      */
     @RequestMapping("denglu.html")
-    public ModelAndView login(String userName, String password, HttpSession session){
+    public ModelAndView login(String userName, String password,HttpSession session){
         ModelAndView result = new ModelAndView();
         Users login=usersRepository.findByUserNameAAndPassword(userName,Md5.MD5(password));
         if(login!=null){
-            new  BackMusic("C:\\Users\\Administrator\\Desktop\\test.mp3").start();
+  /*         session.setAttribute("login",login);
+           Users users=(Users) session.getAttribute("lo gin");*/
+            session.setAttribute("login",login);
             result.setViewName("redirect:/indexfirst.html");
-            session.setAttribute("userslogin", login);
         }else{
             String msg = "* 请输入正确的账号和密码!";
             //登录失败--回调信息

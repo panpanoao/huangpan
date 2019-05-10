@@ -90,22 +90,18 @@ public class BowenServiceImpl {
 }
 
 
-    public int liuyan(Integer userid, String wordsText, HttpSession session, Integer bowenid) {
-        if (userid == null || userid == 0) {
-            return 1;
-        } else {
-            System.out.println(wordsText);
-            Users users = (Users) session.getAttribute("userslogin");
+    public int liuyan(Integer userid, String wordsText, String userName, Integer bowenid) {
+
             Words words = new Words();
-            words.setUserName(users.getUserName());
-            words.setUsersid(users.getId());
+            words.setUsersid(userid);
+            words.setUserName(userName);
             words.setWordsText(wordsText);
             words.setBowenid(bowenid);
             words.setWordsTime(new Date());
             wordsRepository.save(words);
             bowenRepository.updateByLiuLanfu(bowenid);
             return 2;
-        }
+
     }
 
 
@@ -115,6 +111,25 @@ public class BowenServiceImpl {
         wordsRepository.delete(wordsId);
         }catch (Exception e){
             throw new RuntimeException(e.getMessage(),e);
+        }
+    }
+
+    public int lyhuifu(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer bowenid,HttpSession session){
+        Users users=(Users)session.getAttribute("login");
+        if(users!=null) {
+            Reply reply = new Reply();
+            reply.setReplyText(reply_text);
+            reply.setUserid(userid);
+            reply.setUserName(userName);
+            reply.setReplyTime(new Date());
+            reply.setWordsid(users.getId());
+            reply.setWordsName(users.getUserName());
+            reply.setWordsfkid(wordsfkid);
+            bowenRepository.updateByLiuLanfu(bowenid);
+            replyRepository.save(reply);
+            return 2;
+        }else{
+            return 1;
         }
     }
 

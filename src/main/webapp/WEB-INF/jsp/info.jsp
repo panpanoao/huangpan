@@ -50,20 +50,21 @@
                     //获取验证结果，如果成功，执行下面代码
                     var formData = $("#MyForm").serialize();
                     $.ajax({
-                        type: "post",//请求方式
+                        type: "get",//请求方式
                         processData: true,//序列化
                         data: formData,//参数
                         dataType: 'json', //接受数据格式
                         url: basePath + "/liuyan.json", //地址
                         success: function (data) {
                           if(data==1){
-                              alert("请登录");
-                              window.location.href=basePath+"/denglu";
+                            alert("请登录");
+                            window.location.href=basePath+"/denglu";
                           }else{
-                              alert("留言成功");
-                           /*   window.location.href=basePath+"/info.html?id=&add=0";*/
+                            alert("留言成功");
+                            $("#wordsText").val("");
+                            /*   window.location.href=basePath+"/info.html?id=&add=0";*/
                             /*  window.scrollTo(0,document.body.scrollHeight);*/
-                              location.reload(false);
+                            location.reload(false);
                           }
 
                         },
@@ -76,13 +77,67 @@
                 }
               });
 
+          //回复
 
+        $('#id_ad_search').click(function () {
+          var wordsfkid=$('#lyid').val();
+          var userName=$('#lyuserName').val();
+          var userid=$('#userid').val();
+          var reply_text=$('#wordsTexthf').val();
+          var bowenid=${bowen.id};
+          if(reply_text==''||reply_text==null){
+            alert("回复留言不能为空哦!");
+            return;
+          }else{
+            $.ajax({
+              type: "get",//请求方式
+              processData: true,//序列化
+              data: {wordsfkid:wordsfkid,userName:userName,userid:userid,reply_text:reply_text,bowenid:bowenid},//参数
+              dataType: 'json', //接受数据格式
+              url: basePath + "/lyhuifu.json", //地址
+              success: function (data) {
+                if(data==1){
+                  alert("回复失败！")
+                }else{
+                  alert("回复成功");
+                  location.reload(false);
+                }
+
+              },
+              error: function () {
+                alert("错误");
+              }
+            });
+          }
+        });
       });
+
+      function show_modal(id,userName,userid) {
+
+        $('#lyid').val(id);
+        $('#lyuserName').val(userName);
+        $('#userid').val(userid);
+        var id=${sessionScope.login.id};
+        if(id==userid){
+          var res = confirm("自己给自己回复？");
+          if(res){
+            $('#myModal').fadeTo("slow",1);
+            return;
+          }else{
+            return;
+          }
+        }
+        $('#myModal').fadeTo("slow",1);
+      }
+
+      function ab() {
+        $('#myModal').fadeToggle("slow","linear");
+      }
       function cc(id){
         var res = confirm("确认删除吗？");
         if(res){
           $.ajax({
-            type: "post",//请求方式
+            type: "get",//请求方式
             processData: true,//序列化
             data: {wordsid:id},//参数
             dataType: 'json', //接受数据格式
@@ -101,9 +156,9 @@
       }
       function dianzan() {
           var bowenid=${bowen.id};
-          var usersid=${sessionScope.userslogin.id}
+          var usersid=${sessionScope.login.id}
               $.ajax({
-                  type: "post",//请求方式
+                  type: "get",//请求方式
                   processData: true,//序列化
                   data: {bowenid:bowenid,usersid:usersid},//参数
                   dataType: 'json', //接受数据格式
@@ -123,30 +178,16 @@
               });
       }
 
-/*      function chakan(id){
+      function chakan(id){
+
           if($("#chakan"+id).html()=="查看回复"){
               $("#chakan"+id).html("收起回复");
-        $.ajax({
-                  type: "get",//请求方式
-                  data: {id: id},//参数
-                  dataType: 'json', //接受数据格式
-                  url: "/huifu", //地址
-                  traditional: true,//接收数组类型
-                  success: function () {
-                  },
-
-              });
-          /!*    setTimeout(function(){
-                  alert('正在加载中！')
-              },3000)*!/
-              /!*location.reload(false);*!/
-              location.replace("http://localhost:8080/info.html?id="+id);
-              $(".huifu"+id).toggle("slow");
+             $(".huifu"+id).toggle("slow");
           }else{
               $("#chakan"+id).html("查看回复");
               $(".huifu"+id).hide("slow");
           }
-      }*/
+      }
   </script>
 <!--[if lt IE 9]>
 <![endif]-->
@@ -224,11 +265,12 @@
         <p>上一篇：<a href="/news/life/2018-03-13/804.html">作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</a></p>
         <p>下一篇：<a href="/news/life/">返回列表</a></p>
       </div>--%>
-      <div class="news_pl"><h2>文章评论</h2><h4 class="modal-title" id="myModalLabel">发表您的留言</h4>
+      <div class="news_pl"><h2>文章评论</h2><h4 class="modal-title" >发表您的留言</h4>
               </div>
               <form id="MyForm">
                 <div class="modal-body">
-                  <input type="hidden" name="userid" value="${sessionScope.userslogin.id}">
+                  <input type="hidden" name="userid" value="${sessionScope.login.id}">
+                  <input type="hidden" name="userName" value="${sessionScope.login.userName}">
                   <input type="hidden" name="bowenid" value="${bowen.id}">
                   <div class="form-group">
                     <input type="text" name="wordsText"  id="wordsText" class="form-control" placeholder="请输入留言" >
@@ -243,37 +285,67 @@
 
 
 
- <c:forEach items="${wordsList}" var="a">
+ <c:forEach items="${wordsList}" var="a"  >
           <div class="ping">
             <br/>
             <div style="float:left;">
               <span class="comment_name">${a.userName}评论： </span>&nbsp; &nbsp;<span ><fmt:formatDate value="${a.wordsTime}" pattern="yyyy-MM-dd hh:mm:ss" /></span>
             </div>
             <div class="del">
-                &nbsp; &nbsp;  <a style="color:red" onclick="alert('还在开发中')" id="chakan${a.id}">查看回复</a>
-          <c:if test="${sessionScope.userslogin.id==1}">
+                &nbsp; &nbsp;  <a style="color:red" onclick="chakan(${a.id})" id="chakan${a.id}">查看回复</a>&nbsp;
+              &nbsp;       <a style="color:#91361a"   onclick="show_modal('${a.id}','${a.userName}','${a.usersid}');">点击回复</a>
+          <c:if test="${sessionScope.login.id==1}">
            <a onclick="cc(${a.id})" style="color: #b3d135">删除</a>
           </c:if>
             </div>
             <div class="comment_content" >${a.wordsText}</div>
 
 
-<%--<c:if test="${not empty sessionScope.replylist}">
-  <c:forEach items="${sessionScope.replylist}" var="b">
-    <div class="huifu${a.id}" hidden=hidden>
+    <div class="huifu${a.id}"  hidden="hidden">
       <br/>
-      <div style="float:left;">
-        <span class="comment_name"> </span><span style="color: #eec755">回复：</span><span></span>
-      </div>
-      <div class="comment_content" >感觉林丹越来丹越来越帅了，好棒感觉林丹越来越帅了，好棒感觉林丹越来越帅了，好棒
-      </div> <a  style="color: #E2523A;">点击回复</a>
+
+        <c:forEach items="${replyList}" var="b">
+
+         <c:if test="${a.id==b.wordsfkid}">
+            <div style="float:left;">
+                <span class="comment_name">${b.wordsName} </span>&nbsp;${b.replyTime}<span style="color: #eec755">回复：</span><span>${b.userName}&nbsp;</span>
+            </div>
+          <div class="comment_content" style="color: royalblue" >${b.replyText}
+        </div>
+         </c:if>
+        </c:forEach>
+
+
     </div>
-  </c:forEach>
-</c:if>--%>
+
 
 
           </div>
  </c:forEach>
+
+
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog"> <div class="modal-content">
+          <div class="modal-header"> <button type="button" class="close" onclick="ab()"> &times;
+          </button> <h4 class="modal-title" id="myModalLabel"> 回复留言 </h4> </div> <div class="modal-body">
+          <form id="huifuform">
+            <input type="hidden" name="userid" value="" id="lyid">
+            <input type="hidden" name="userName" value="" id="lyuserName">
+            <input type="hidden" name="userid" value="" id="userid">
+          <div class="form-group">
+            <input type="text" name="wordsTexthf"  id="wordsTexthf" class="form-control" placeholder="请输入留言" >
+          </div>
+          </form>
+        </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ab()">关闭 </button>
+          <button type="button" class="btn btn-primary" id="id_ad_search" > 确认 </button>
+        </div>
+        </div></div>
+      </div>
+
+
 
 
 

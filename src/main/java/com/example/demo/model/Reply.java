@@ -89,4 +89,17 @@ public class Reply {
         this.wordsName = wordsName;
     }
 
+    @Override
+    public String toString() {
+        return "Reply{" +
+                "id=" + id +
+                ", userid=" + userid +
+                ", userName='" + userName + '\'' +
+                ", replyTime=" + replyTime +
+                ", replyText='" + replyText + '\'' +
+                ", wordsid=" + wordsid +
+                ", wordsName='" + wordsName + '\'' +
+                ", wordsfkid=" + wordsfkid +
+                '}';
+    }
 }
