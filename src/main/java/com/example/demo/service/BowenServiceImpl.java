@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.BowenRepository;
-import com.example.demo.dao.ReplyRepository;
-import com.example.demo.dao.WordsRepository;
-import com.example.demo.dao.ZanRepository;
+import com.example.demo.dao.*;
 import com.example.demo.mapper.BowenMapper;
 import com.example.demo.model.*;
 import com.github.pagehelper.PageHelper;
@@ -11,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Cache;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
@@ -38,6 +36,8 @@ public class BowenServiceImpl {
     @Autowired
     BowenMapper bowenMapper;
 
+    @Autowired
+    AlbumRepository albumRepository;
     /**
      * 修改浏览量之后进行查询
      * @param id
@@ -91,16 +91,25 @@ public class BowenServiceImpl {
 
 
     public int liuyan(Integer userid, String wordsText, String userName, Integer bowenid) {
+      try {
+          if(userid==null||userid==0){
+              return  1;
+          }else {
 
-            Words words = new Words();
-            words.setUsersid(userid);
-            words.setUserName(userName);
-            words.setWordsText(wordsText);
-            words.setBowenid(bowenid);
-            words.setWordsTime(new Date());
-            wordsRepository.save(words);
-            bowenRepository.updateByLiuLanfu(bowenid);
-            return 2;
+              Words words = new Words();
+
+              words.setUsersid(userid);
+              words.setUserName(userName);
+              words.setWordsText(wordsText);
+              words.setBowenid(bowenid);
+              words.setWordsTime(new Date());
+              wordsRepository.save(words);
+              bowenRepository.updateByLiuLanfu(bowenid);
+              return 2;
+          }
+      } catch(Exception e){
+          throw new RuntimeException(e.getMessage());
+      }
 
     }
 
@@ -140,4 +149,26 @@ public class BowenServiceImpl {
      public Page<Bowen> ccc(){
     return new Page<Bowen>(bowenRepository.findAll(),1,5);
 }
+
+
+
+    public int lyhuifualbum(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer albumid,HttpSession session){
+        Users users=(Users)session.getAttribute("login");
+        if(users!=null) {
+            Reply reply = new Reply();
+            reply.setReplyText(reply_text);
+            reply.setUserid(userid);
+            reply.setUserName(userName);
+            reply.setReplyTime(new Date());
+            reply.setWordsid(users.getId());
+            reply.setWordsName(users.getUserName());
+            reply.setWordsfkid(wordsfkid);
+            albumRepository.updateByLiuLanfu(albumid);
+            replyRepository.save(reply);
+            return 2;
+        }else{
+            return 1;
+        }
+    }
+
 }

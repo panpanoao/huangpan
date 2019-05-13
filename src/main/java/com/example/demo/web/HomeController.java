@@ -80,9 +80,7 @@ public class HomeController {
             wordsid.add(words.getId());
         }
         List<Reply> replyList=replyRepository.findByWordsfkidInOrderByReplyTimeDesc(wordsid);
-        for (Reply reply : replyList) {
-            System.out.println("数据"+reply);
-        }
+
 
         result.addObject("replyList", replyList);
             if(code==null||code==""||code=="null"){
@@ -106,13 +104,9 @@ public class HomeController {
     @ResponseBody
     @RequestMapping("/liuyan.json")
     public int liuyan(Integer userid, String wordsText, String userName, Integer bowenid, HttpSession session) {
-        System.out.println(userid);
-        if (userid == null || userid == 0) {
-            return 1;
-        } else {
-            Users users=(Users) session.getAttribute("login");
+
             return bowenService.liuyan(userid, wordsText, userName, bowenid);
-        }
+
     }
 
     /**
@@ -223,10 +217,20 @@ public class HomeController {
     //---------视频----------------
     @RequestMapping("infopic.html")
     public ModelAndView findByalbumId(@RequestParam(required = false, defaultValue = "1") Integer id,String type) {
-        System.out.println(type);
+
         ModelAndView result = new ModelAndView();
         Album album = albumService.findAllByUpdate(id);
         List<Words> wordsList = wordsRepository.findByalbumid(id);
+
+        List<Integer> wordsid=new ArrayList<>();
+        for (Words words : wordsList) {
+            wordsid.add(words.getId());
+        }
+        List<Reply> replyList=replyRepository.findByWordsfkidInOrderByReplyTimeDesc(wordsid);
+
+
+        result.addObject("replyList", replyList);
+
         String[] imglist = album.getCoverMaplist().split(",");
         result.addObject("imglist", imglist);
         result.addObject("size", imglist.length);
@@ -287,6 +291,12 @@ public class HomeController {
     @RequestMapping("/lyhuifu.json")
     public int lyhuifu(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer bowenid ,HttpSession session){
      return bowenService.lyhuifu( wordsfkid, userName,userid, reply_text,bowenid,session);
+    }
+
+    @ResponseBody
+    @RequestMapping("/lyhuifualbum.json")
+    public int lyhuifualbum(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer albumid ,HttpSession session){
+        return bowenService.lyhuifualbum( wordsfkid, userName,userid, reply_text,albumid,session);
     }
 
 }

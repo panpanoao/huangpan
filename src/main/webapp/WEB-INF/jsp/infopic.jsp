@@ -87,6 +87,38 @@
               }
           });
 
+        $('#id_ad_search').click(function () {
+          var wordsfkid=$('#lyid').val();
+          var userName=$('#lyuserName').val();
+          var userid=$('#userid').val();
+          var reply_text=$('#wordsTexthf').val();
+          var albumid=$('#albumid').val();
+          if(reply_text==''||reply_text==null){
+            alert("回复留言不能为空哦!");
+            return;
+          }else{
+            $.ajax({
+              type: "get",//请求方式
+              processData: true,//序列化
+              data: {wordsfkid:wordsfkid,userName:userName,userid:userid,reply_text:reply_text,albumid:albumid},//参数
+              dataType: 'json', //接受数据格式
+              url: basePath + "/lyhuifualbum.json", //地址
+              success: function (data) {
+                if(data==1){
+                  alert("回复失败！")
+                }else{
+                  alert("回复成功");
+                  location.reload(false);
+                }
+
+              },
+              error: function () {
+                alert("错误");
+              }
+            });
+          }
+        });
+
 
       });
       function cc(id){
@@ -133,6 +165,38 @@
                       alert("错误");
                   }
               });
+      }
+
+      function show_modal(id,userName,userid) {
+
+        $('#lyid').val(id);
+        $('#lyuserName').val(userName);
+        $('#userid').val(userid);
+        var id=${sessionScope.login.id};
+        if(id==userid){
+          var res = confirm("自己给自己回复？");
+          if(res){
+            $('#myModal').fadeTo("slow",1);
+            return;
+          }else{
+            return;
+          }
+        }
+        $('#myModal').fadeTo("slow",1);
+      }
+
+      function ab() {
+        $('#myModal').fadeToggle("slow","linear");
+      }
+      function chakan(id){
+
+        if($("#chakan"+id).html()=="查看回复"){
+          $("#chakan"+id).html("收起回复");
+          $(".huifu"+id).toggle("slow");
+        }else{
+          $("#chakan"+id).html("查看回复");
+          $(".huifu"+id).hide("slow");
+        }
       }
   </script>
 </head>
@@ -249,15 +313,15 @@
       </form>
 
 
-
-      <c:forEach items="${wordsList}" var="a">
+      <c:forEach items="${wordsList}" var="a"  >
         <div class="ping">
           <br/>
           <div style="float:left;">
             <span class="comment_name">${a.userName}评论： </span>&nbsp; &nbsp;<span ><fmt:formatDate value="${a.albumTime}" pattern="yyyy-MM-dd hh:mm:ss" /></span>
           </div>
           <div class="del">
-            &nbsp; &nbsp;  <a style="color:red" onclick="alert('还在开发中')" id="chakan${a.id}">查看回复</a>
+            &nbsp; &nbsp;  <a style="color:red" onclick="chakan(${a.id})" id="chakan${a.id}">查看回复</a>&nbsp;
+            &nbsp;       <a style="color:#91361a"   onclick="show_modal('${a.id}','${a.userName}','${a.usersid}');">点击回复</a>
             <c:if test="${sessionScope.login.id==1}">
               <a onclick="cc(${a.id})" style="color: #b3d135">删除</a>
             </c:if>
@@ -265,8 +329,50 @@
           <div class="comment_content" >${a.albumText}</div>
 
 
+          <div class="huifu${a.id}"  hidden="hidden">
+            <br/>
+
+            <c:forEach items="${replyList}" var="b">
+
+              <c:if test="${a.id==b.wordsfkid}">
+                <div style="float:left;">
+                  <span class="comment_name">${b.wordsName} </span>&nbsp;${b.replyTime}<span style="color: #eec755">回复：</span><span>${b.userName}&nbsp;</span>
+                </div>
+                <div class="comment_content" style="color: royalblue" >${b.replyText}
+                </div>
+              </c:if>
+            </c:forEach>
+
+
+          </div>
+
+
+
         </div>
       </c:forEach>
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog"> <div class="modal-content">
+          <div class="modal-header"> <button type="button" class="close" onclick="ab()"> &times;
+          </button> <h4 class="modal-title" id="myModalLabel"> 回复留言 </h4> </div> <div class="modal-body">
+          <form id="huifuform">
+            <input type="hidden" name="userid" value="" id="lyid">
+            <input type="hidden" name="albumid" value="${album.id}" id="albumid">
+            <input type="hidden" name="userName" value="" id="lyuserName">
+            <input type="hidden" name="userid" value="" id="userid">
+            <div class="form-group">
+              <input type="text" name="wordsTexthf"  id="wordsTexthf" class="form-control" placeholder="请输入留言" >
+            </div>
+          </form>
+        </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ab()">关闭 </button>
+          <button type="button" class="btn btn-primary" id="id_ad_search" > 确认 </button>
+        </div>
+        </div></div>
+      </div>
+
+
     </div>
   </div>
   <div class="blank"></div>

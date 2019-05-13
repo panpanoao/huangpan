@@ -84,7 +84,7 @@
           var userName=$('#lyuserName').val();
           var userid=$('#userid').val();
           var reply_text=$('#wordsTexthf').val();
-          var bowenid=${bowen.id};
+          var bowenid=$('#bowenid').val();
           if(reply_text==''||reply_text==null){
             alert("回复留言不能为空哦!");
             return;
@@ -265,7 +265,8 @@
         <p>上一篇：<a href="/news/life/2018-03-13/804.html">作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</a></p>
         <p>下一篇：<a href="/news/life/">返回列表</a></p>
       </div>--%>
-      <div class="news_pl"><h2>文章评论</h2><h4 class="modal-title" >发表您的留言</h4>
+      <div class="news_pl"><h2>文章评论</h2>
+          <h4 class="modal-title" >发表您的留言</h4>
               </div>
               <form id="MyForm">
                 <div class="modal-body">
@@ -335,6 +336,7 @@
             <input type="hidden" name="userid" value="" id="lyid">
             <input type="hidden" name="userName" value="" id="lyuserName">
             <input type="hidden" name="userid" value="" id="userid">
+            <input type="hidden" name="bowenid" value="${bowen.id}" id="bowenid">
           <div class="form-group">
             <input type="text" name="wordsTexthf"  id="wordsTexthf" class="form-control" placeholder="请输入留言" >
           </div>

@@ -27,7 +27,7 @@ public class Words{
     @Column(name="album_time")
     private Date albumTime;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

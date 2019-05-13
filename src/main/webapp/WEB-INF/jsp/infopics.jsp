@@ -5,9 +5,9 @@
 <!doctype html>
 <html>
 <head>
-<title>澈骨</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
+  <title>澈骨</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="${pageContext.request.contextPath}/webjars/jquery/3.1.1/jquery.min.js"></script>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.5/css/bootstrap.min.css"/>
@@ -29,8 +29,8 @@
 
   <script src="${pageContext.request.contextPath}/js/jquery.mincc.js" type="text/javascript"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/js/commss.js"></script>
-<script src="${pageContext.request.contextPath}/js/piccontent.min.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/js/modernizr.js" type="text/javascript"></script>
+  <script src="${pageContext.request.contextPath}/js/piccontent.min.js" type="text/javascript"></script>
+  <script src="${pageContext.request.contextPath}/js/modernizr.js" type="text/javascript"></script>
   <style>
     .ping{
 
@@ -44,98 +44,160 @@
       display: table-cell;
       vertical-align: middle;
       text-align: center;
-       max-width: 100%;
+      max-width: 100%;
     }
   </style>
   <script type="text/javascript">
 
-      $(function(){
+    $(function(){
 
 
-          $('#btn_submit').click(function () {
-              var a=$("#albumText").val();
-              if(a==null||a==""){
-                  alert("留言不能输入空的哦");
-              }else {
-                  //获取验证结果，如果成功，执行下面代码
-                  var formData = $("#MyForm").serialize();
-                  $.ajax({
-                      type: "get",//请求方式
-                      processData: true,//序列化
-                      data: formData,//参数
-                      dataType: 'json', //接受数据格式
-                      url: basePath + "/liuyanalbum.json", //地址
-                      success: function (data) {
-                          if(data==1){
-                              alert("请登录");
-                              window.location.href=basePath+"/denglu";
-                          }else{
-                              $("#albumText").val("");
-                              alert("留言成功");
-                              /*   window.location.href=basePath+"/info.html?id=&add=0";*/
-                              /*  window.scrollTo(0,document.body.scrollHeight);*/
-                     /*         location.reload(false);*/
-                              location.reload(false);
-                          }
-
-                      },
-                      error: function () {
-                          alert("错误");
-                      }
-                  });
-                  $("#worksText").val("");
-
-              }
-          });
-
-
-      });
-
-      function cc(id){
-        var res = confirm("确认删除吗？");
-        if(res){
+      $('#btn_submit').click(function () {
+        var a=$("#albumText").val();
+        if(a==null||a==""){
+          alert("留言不能输入空的哦");
+        }else {
+          //获取验证结果，如果成功，执行下面代码
+          var formData = $("#MyForm").serialize();
           $.ajax({
-            type: "post",//请求方式
+            type: "get",//请求方式
             processData: true,//序列化
-            data: {wordsid:id},//参数
+            data: formData,//参数
             dataType: 'json', //接受数据格式
-            url: basePath + "/deletewords.json", //地址
+            url: basePath + "/liuyanalbum.json", //地址
             success: function (data) {
               if(data==1){
-                alert("删除成功");
+                alert("请登录");
+                window.location.href=basePath+"/denglu";
+              }else{
+                $("#albumText").val("");
+                alert("留言成功");
+                /*   window.location.href=basePath+"/info.html?id=&add=0";*/
+                /*  window.scrollTo(0,document.body.scrollHeight);*/
                 location.reload(false);
               }
+
+            },
+            error: function () {
+              alert("错误");
+            }
+          });
+          $("#worksText").val("");
+
+        }
+      });
+
+      $('#id_ad_search').click(function () {
+        var wordsfkid=$('#lyid').val();
+        var userName=$('#lyuserName').val();
+        var userid=$('#userid').val();
+        var reply_text=$('#wordsTexthf').val();
+        var albumid=$('#albumid').val();
+        if(reply_text==''||reply_text==null){
+          alert("回复留言不能为空哦!");
+          return;
+        }else{
+          $.ajax({
+            type: "get",//请求方式
+            processData: true,//序列化
+            data: {wordsfkid:wordsfkid,userName:userName,userid:userid,reply_text:reply_text,albumid:albumid},//参数
+            dataType: 'json', //接受数据格式
+            url: basePath + "/lyhuifualbum.json", //地址
+            success: function (data) {
+              if(data==1){
+                alert("回复失败！")
+              }else{
+                alert("回复成功");
+                location.reload(false);
+              }
+
             },
             error: function () {
               alert("错误");
             }
           });
         }
+      });
+
+
+    });
+    function cc(id){
+      var res = confirm("确认删除吗？");
+      if(res){
+        $.ajax({
+          type: "post",//请求方式
+          processData: true,//序列化
+          data: {wordsid:id},//参数
+          dataType: 'json', //接受数据格式
+          url: basePath + "/deletewords.json", //地址
+          success: function (data) {
+            if(data==1){
+              alert("删除成功");
+              location.reload(false);
+            }
+          },
+          error: function () {
+            alert("错误");
+          }
+        });
       }
+    }
 
     function dianzan() {
-          var albumid=${album.id};
-          var usersid=${sessionScope.login.id}
+      var albumid=${album.id};
+      var usersid=${sessionScope.login.id}
               $.ajax({
-                  type: "post",//请求方式
-                  processData: true,//序列化
-                  data: {albumid:albumid,usersid:usersid},//参数
-                  dataType: 'json', //接受数据格式
-                  url: basePath + "/dianzanalbum.json", //地址
-                  success: function (data) {
-                      if(data==1){
-                          alert("你已经点过赞了哦！")
-                      }else{
-                          alert("点赞成功");
-                          location.reload(false);
-                      }
-
-                  },
-                  error: function () {
-                      alert("错误");
+                type: "post",//请求方式
+                processData: true,//序列化
+                data: {albumid:albumid,usersid:usersid},//参数
+                dataType: 'json', //接受数据格式
+                url: basePath + "/dianzanalbum.json", //地址
+                success: function (data) {
+                  if(data==1){
+                    alert("你已经点过赞了哦！")
+                  }else{
+                    alert("点赞成功");
+                    location.reload(false);
                   }
+
+                },
+                error: function () {
+                  alert("错误");
+                }
               });
+    }
+
+    function show_modal(id,userName,userid) {
+
+      $('#lyid').val(id);
+      $('#lyuserName').val(userName);
+      $('#userid').val(userid);
+      var id=${sessionScope.login.id};
+      if(id==userid){
+        var res = confirm("自己给自己回复？");
+        if(res){
+          $('#myModal').fadeTo("slow",1);
+          return;
+        }else{
+          return;
+        }
       }
+      $('#myModal').fadeTo("slow",1);
+    }
+
+    function ab() {
+      $('#myModal').fadeToggle("slow","linear");
+    }
+    function chakan(id){
+
+      if($("#chakan"+id).html()=="查看回复"){
+        $("#chakan"+id).html("收起回复");
+        $(".huifu"+id).toggle("slow");
+      }else{
+        $("#chakan"+id).html("查看回复");
+        $(".huifu"+id).hide("slow");
+      }
+    }
   </script>
 </head>
 <body>
@@ -159,7 +221,6 @@
     </ul>
   </nav>
 </header>
-
 <article>
   <div class="picsbox">
     <div class="bodymodal"></div>
@@ -201,9 +262,9 @@
             <div class="picmidleft"> <a href="javascript:void(0)" id="preArrow_B"><span class="sleft"></span></a> </div>
             <div class="picmidmid">
               <ul id="cc" >
-               <c:forEach var="t" items="${imglist}">
-                <li> <a href="javascript:void(0);"><img src="${pageContext.request.contextPath}${t}"  alt="" bigimg="${pageContext.request.contextPath}${t}"  text=""  /></a></li>
-               </c:forEach>
+                <c:forEach var="t" items="${imglist}">
+                  <li> <a href="javascript:void(0);"><img src="${pageContext.request.contextPath}${t}"  alt="" bigimg="${pageContext.request.contextPath}${t}"  text=""  /></a></li>
+                </c:forEach>
               </ul>
             </div>
             <div class="picmidright"> <a href="javascript:void(0)" id="nextArrow_B"><span class="sright"></span></a> </div>
@@ -214,14 +275,14 @@
       <!--列表展示-->
       <div class="piclistshow">
         <ul>
-     <%--     <li>
-            <div class="picimg"><img src="images/1.jpg"  class="ccc"/></div>
-          </li>--%>
-  <c:forEach var="t" items="${imglist}">
-          <li>
-            <div class="picimg"><img src="${pageContext.request.contextPath}${t}" class="ccc"/></div>
-          </li>
-</c:forEach>
+          <%--     <li>
+                 <div class="picimg"><img src="images/1.jpg"  class="ccc"/></div>
+               </li>--%>
+          <c:forEach var="t" items="${imglist}">
+            <li>
+              <div class="picimg"><img src="${pageContext.request.contextPath}${t}" class="ccc"/></div>
+            </li>
+          </c:forEach>
         </ul>
       </div>
     </div>
@@ -246,24 +307,66 @@
       </form>
 
 
-
-      <c:forEach items="${wordsList}" var="a">
+      <c:forEach items="${wordsList}" var="a"  >
         <div class="ping">
           <br/>
           <div style="float:left;">
             <span class="comment_name">${a.userName}评论： </span>&nbsp; &nbsp;<span ><fmt:formatDate value="${a.albumTime}" pattern="yyyy-MM-dd hh:mm:ss" /></span>
           </div>
           <div class="del">
-            &nbsp; &nbsp;  <a style="color:red" onclick="alert('还在开发中')" id="chakan${a.id}">查看回复</a>
-            <c:if test="${sessionScope.userslogin.id==1}">
+            &nbsp; &nbsp;  <a style="color:red" onclick="chakan(${a.id})" id="chakan${a.id}">查看回复</a>&nbsp;
+            &nbsp;       <a style="color:#91361a"   onclick="show_modal('${a.id}','${a.userName}','${a.usersid}');">点击回复</a>
+            <c:if test="${sessionScope.login.id==1}">
               <a onclick="cc(${a.id})" style="color: #b3d135">删除</a>
             </c:if>
           </div>
           <div class="comment_content" >${a.albumText}</div>
 
 
+          <div class="huifu${a.id}"  hidden="hidden">
+            <br/>
+
+            <c:forEach items="${replyList}" var="b">
+
+              <c:if test="${a.id==b.wordsfkid}">
+                <div style="float:left;">
+                  <span class="comment_name">${b.wordsName} </span>&nbsp;${b.replyTime}<span style="color: #eec755">回复：</span><span>${b.userName}&nbsp;</span>
+                </div>
+                <div class="comment_content" style="color: royalblue" >${b.replyText}
+                </div>
+              </c:if>
+            </c:forEach>
+
+
+          </div>
+
+
+
         </div>
       </c:forEach>
+
+
+      <!-- 模态框（Modal） -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog"> <div class="modal-content">
+          <div class="modal-header"> <button type="button" class="close" onclick="ab()"> &times;
+          </button> <h4 class="modal-title" id="myModalLabel"> 回复留言 </h4> </div> <div class="modal-body">
+          <form id="huifuform">
+            <input type="hidden" name="userid" value="" id="lyid">
+            <input type="hidden" name="albumid" value="${album.id}" id="albumid">
+            <input type="hidden" name="userName" value="" id="lyuserName">
+            <input type="hidden" name="userid" value="" id="userid">
+            <div class="form-group">
+              <input type="text" name="wordsTexthf"  id="wordsTexthf" class="form-control" placeholder="请输入留言" >
+            </div>
+          </form>
+        </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ab()">关闭 </button>
+          <button type="button" class="btn btn-primary" id="id_ad_search" > 确认 </button>
+        </div>
+        </div></div>
+      </div>
+
+
     </div>
   </div>
   <div class="blank"></div>
