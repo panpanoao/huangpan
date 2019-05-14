@@ -124,7 +124,7 @@ public class BowenServiceImpl {
     }
 
     public int lyhuifu(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer bowenid,HttpSession session){
-        Users users=(Users)session.getAttribute("login");
+        Users users=(Users)session.getServletContext().getAttribute("login");
         if(users!=null) {
             Reply reply = new Reply();
             reply.setReplyText(reply_text);
@@ -153,7 +153,7 @@ public class BowenServiceImpl {
 
 
     public int lyhuifualbum(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer albumid,HttpSession session){
-        Users users=(Users)session.getAttribute("login");
+        Users users=(Users)session.getServletContext().getAttribute("login");
         if(users!=null) {
             Reply reply = new Reply();
             reply.setReplyText(reply_text);

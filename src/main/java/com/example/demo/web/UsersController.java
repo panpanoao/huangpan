@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
@@ -39,6 +40,7 @@ public class UsersController {
         ModelAndView a=new ModelAndView();
         a.setViewName("/denglu");
         return a;
+        
     }
 
     /**
@@ -53,9 +55,8 @@ public class UsersController {
         ModelAndView result = new ModelAndView();
         Users login=usersRepository.findByUserNameAAndPassword(userName,Md5.MD5(password));
         if(login!=null){
-  /*         session.setAttribute("login",login);
-           Users users=(Users) session.getAttribute("lo gin");*/
-            session.setAttribute("login",login);
+            ServletContext application = session.getServletContext();
+            application.setAttribute("login",login);
             result.setViewName("redirect:/indexfirst.html");
         }else{
             String msg = "* 请输入正确的账号和密码!";

@@ -62,8 +62,6 @@
                           }else{
                             alert("留言成功");
                             $("#wordsText").val("");
-                            /*   window.location.href=basePath+"/info.html?id=&add=0";*/
-                            /*  window.scrollTo(0,document.body.scrollHeight);*/
                             location.reload(false);
                           }
 
@@ -117,8 +115,8 @@
         $('#lyid').val(id);
         $('#lyuserName').val(userName);
         $('#userid').val(userid);
-        var id=${sessionScope.login.id};
-        if(id==userid){
+        var ids=$('#appuserid').val();
+        if(ids==userid){
           var res = confirm("自己给自己回复？");
           if(res){
             $('#myModal').fadeTo("slow",1);
@@ -156,7 +154,7 @@
       }
       function dianzan() {
           var bowenid=${bowen.id};
-          var usersid=${sessionScope.login.id}
+          var usersid=$('#appuserid').val();
               $.ajax({
                   type: "get",//请求方式
                   processData: true,//序列化
@@ -270,8 +268,8 @@
               </div>
               <form id="MyForm">
                 <div class="modal-body">
-                  <input type="hidden" name="userid" value="${sessionScope.login.id}">
-                  <input type="hidden" name="userName" value="${sessionScope.login.userName}">
+                  <input type="hidden" name="userid" id="appuserid" value="${applicationScope.login.id}" >
+                  <input type="hidden" name="userName" value="${applicationScope.login.userName}">
                   <input type="hidden" name="bowenid" value="${bowen.id}">
                   <div class="form-group">
                     <input type="text" name="wordsText"  id="wordsText" class="form-control" placeholder="请输入留言" >
@@ -295,7 +293,7 @@
             <div class="del">
                 &nbsp; &nbsp;  <a style="color:red" onclick="chakan(${a.id})" id="chakan${a.id}">查看回复</a>&nbsp;
               &nbsp;       <a style="color:#91361a"   onclick="show_modal('${a.id}','${a.userName}','${a.usersid}');">点击回复</a>
-          <c:if test="${sessionScope.login.id==1}">
+          <c:if test="${applicationScope.login.id==1}">
            <a onclick="cc(${a.id})" style="color: #b3d135">删除</a>
           </c:if>
             </div>

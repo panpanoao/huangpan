@@ -48,7 +48,7 @@ public class HomeController {
     public ModelAndView indexfirst(HttpSession session) {
 
         ModelAndView result = new ModelAndView();
-        Users users=(Users)session.getAttribute("login");
+        Users users=(Users)session.getServletContext().getAttribute("login");
        if(users==null){
            result.setViewName("/denglu");
        }else {
@@ -121,23 +121,6 @@ public class HomeController {
     public int dianzan(Integer usersid, Integer bowenid) {
         return bowenService.findByuseridandbowenid(usersid, bowenid);
     }
-/*
-    @ResponseBody
-    @RequestMapping("/huifu")
-    public void deletenewById(Integer id, HttpSession session){
-        if(id!=null&&id!=0) {
-            List<Reply> replies = replyRepository.findBywordsid(id);
-            if(replies!=null&&replies.size()>0){
-                System.out.println(replies.get(0).getReplyText());
-                session .setAttribute("replylist", replies);
-            }else{
-                session.removeAttribute("replylist");
-            }
-        }else{
-            session.removeAttribute("replylist");
-        }
-    }*/
-
 
     /**
      * 第二个页面
@@ -166,19 +149,6 @@ public class HomeController {
         List<Bowen> bowenList = bowenService.findByPage(page, rows);
         result.addObject("pageInfo", new PageInfo<Bowen>(bowenList));
         PageInfo<Bowen> pageInfo = new PageInfo<Bowen>(bowenList);
-  /*   Page<Bowen> lists= bowenService.ccc();
-
-        System.out.println("最小页码"+lists.getFirstpage());
-        System.out.println("总数"+lists.getCount());
-        System.out.println("最后一页"+lists.getLastpage());
-        System.out.println(lists.getnavs());
-        System.out.println("数组内容");
-        for (int i : lists.getNav()) {
-            System.out.println(i);
-        }
-        for (Bowen bowen : lists.getPageList()) {
-            System.out.println(bowen);
-        }*/
         return result;
     }
 
@@ -287,16 +257,44 @@ public class HomeController {
             return 2;
         }
     }
+
+    /**
+     * 博文留言
+     * @param wordsfkid
+     * @param userName
+     * @param userid
+     * @param reply_text
+     * @param bowenid
+     * @param session
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/lyhuifu.json")
     public int lyhuifu(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer bowenid ,HttpSession session){
      return bowenService.lyhuifu( wordsfkid, userName,userid, reply_text,bowenid,session);
     }
 
+    /**
+     * 相册留言
+     * @param wordsfkid
+     * @param userName
+     * @param userid
+     * @param reply_text
+     * @param albumid
+     * @param session
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/lyhuifualbum.json")
     public int lyhuifualbum(Integer wordsfkid,String userName,Integer userid,String reply_text,Integer albumid ,HttpSession session){
         return bowenService.lyhuifualbum( wordsfkid, userName,userid, reply_text,albumid,session);
     }
 
+
+    @ResponseBody
+    @RequestMapping("/aa")
+    public int  aa(String aa){
+
+       return 1;
+    }
 }
